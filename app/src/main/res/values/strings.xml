@@ -1,4 +1,10 @@
 <resources>
     <string name="app_name">FFCShelper</string>
     <string name="action_settings">Settings</string>
+    <string name="setcourse">Okay</string>
+    <string name="choosecourse">Choose Course</string>
+
+
+
+
 </resources>
