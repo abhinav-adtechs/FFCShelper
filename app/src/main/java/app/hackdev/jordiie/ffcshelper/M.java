@@ -20,6 +20,21 @@ public class M {
         Toast.makeText(context, message.toString(), Toast.LENGTH_SHORT).show();
     }
 
+
+    /***
+     * Shows toast
+     *
+     * @param context  context from activity or service or broadcase receiver
+     * @param messages array of message to be displayed as toast
+     */
+    public static void T(Context context, Object... messages) {
+        String s = "";
+        for (Object o : messages) {
+            s += (o.toString() + "\t");
+        }
+        Toast.makeText(context, s, Toast.LENGTH_SHORT).show();
+    }
+
     /**
      * Log the message in the Logcat
      *
@@ -29,4 +44,19 @@ public class M {
     public static void L(String tag, Object message) {
         Log.d(tag, message.toString());
     }
+
+    /**
+     * Log the message in the Logcat
+     *
+     * @param tag      tag for identification
+     * @param messages array of messages to logged
+     */
+    public static void L(String tag, Object... messages) {
+        String s = "";
+        for (Object o : messages) {
+            s += (o.toString() + "\t");
+        }
+        Log.d(tag, s);
+    }
+
 }

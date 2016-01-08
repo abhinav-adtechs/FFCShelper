@@ -5,6 +5,11 @@ import java.util.Collections;
 
 public class Utils {
 
+    /**
+     * Get all the slots
+     *
+     * @return All the slots available in VIT
+     */
     public static String[] getSlots() {
         return new String[]{"A1", "B1", "C1", "D1", "E1", "F1", "G1", "A1+TA1", "D1+TD1", "E1+TE1", "F1+TF1",
                 "A2", "B2", "C2", "D2", "E2", "F2", "G2", "A2+TA2", "B2+TB2", "C2+TC2", "D2+TD2", "E2+TE1", "F2+TF2", "G2+TG2",
