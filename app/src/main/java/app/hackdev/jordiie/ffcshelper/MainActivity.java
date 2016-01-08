@@ -23,8 +23,6 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
-import yogesh.firzen.mukkiasevaigal.M;
-
 public class MainActivity extends AppCompatActivity {
 
     private EditText passwordInput;
@@ -123,6 +121,9 @@ public class MainActivity extends AppCompatActivity {
         positiveAction.setEnabled(false); // disabled by default
     }*/
 
+    /**
+     * Show a dialog box for registering
+     */
     private void register() {
         final View details = View.inflate(this, R.layout.course_details, null);
         final AppCompatSpinner cred = (AppCompatSpinner) details.findViewById(R.id.c_credits);
@@ -142,8 +143,8 @@ public class MainActivity extends AppCompatActivity {
                             M.T(MainActivity.this, "Please fill out both Course Title and Course Code");
                         else {
                             check(c_title.getText().toString(), c_code.getText().toString(),
-                                    cred.getSelectedItemPosition(), slot.getSelectedItemPosition(),
-                                    String.valueOf(slot.getSelectedItem()));
+                                    cred.getSelectedItemPosition(), slot.getSelectedItemPosition()
+                            );
                         }
                     }
                 })
@@ -157,7 +158,15 @@ public class MainActivity extends AppCompatActivity {
         dialog.show();
     }
 
-    private void check(String c_name, String c_code, int c_credits, int c_slot, String s) {
+    /**
+     * Check for clashes and add if no clashes
+     *
+     * @param c_name    Course Title
+     * @param c_code    Coirse Code
+     * @param c_credits Course Credits
+     * @param c_slot    Course Slot
+     */
+    private void check(String c_name, String c_code, int c_credits, int c_slot) {
         Slot slot = new Slot();
         slot.isMorn = isMorn(c_slot);
         slot.isTh = isTh(c_slot);
@@ -207,14 +216,33 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Check if the slot is a Theory or a Lab
+     *
+     * @param slot slot selected from the spinner
+     * @return true if slot is theory ,false otherwise
+     */
     private boolean isTh(int slot) {
         return slot >= 0 && slot <= 24;
     }
 
+    /**
+     * Check if the slot is a Morning or Afternoon
+     *
+     * @param slot slot selected from the spinner
+     * @return true if slot is Morning ,false otherwise
+     */
     private boolean isMorn(int slot) {
         return slot >= 0 && slot <= 10 || slot >= 25 && slot <= 37;
     }
 
+    /**
+     * Get the position in the time table
+     *
+     * @param slot slot selected from the spinner
+     * @param isTh Theory or Lab
+     * @return List of integers which has the position of a slot in the time table
+     */
     private List<Integer> getPos(int slot, boolean isTh) {
         if (isTh) {
             switch (slot) {
@@ -339,14 +367,16 @@ public class MainActivity extends AppCompatActivity {
                 default:
                     return new LinkedList<>();
             }
-            /*int s = slot;
-            if (slot >= 38) {
-                s = slot - 13;
-            }*/
-
         }
     }
 
+    /**
+     * Get days for a slot
+     *
+     * @param slot slot selected from spinner
+     * @param isTh Theory or Lab
+     * @return List of integer which contains days for a particular slot
+     */
     private List<Integer> getDays(int slot, boolean isTh) {
         if (isTh) {
             switch (slot) {
@@ -426,11 +456,6 @@ public class MainActivity extends AppCompatActivity {
                 case 52:
                     return Collections.singletonList(4);
             }
-            /*int s = slot;
-            if (slot >= 38) {
-                s = slot - 13;
-            }*/
-
         }
         return new LinkedList<>();
     }
