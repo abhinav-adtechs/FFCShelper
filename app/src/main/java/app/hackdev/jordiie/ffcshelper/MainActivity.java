@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.app.AppCompatDialog;
 import android.support.v7.widget.AppCompatEditText;
 import android.support.v7.widget.AppCompatSpinner;
 import android.support.v7.widget.LinearLayoutManager;
@@ -146,22 +145,12 @@ public class MainActivity extends AppCompatActivity implements CourseRemoveListe
         final AppCompatSpinner slot = (AppCompatSpinner) details.findViewById(R.id.c_slot);
         cred.setAdapter(new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, new String[]{"1", "2", "3", "4", "5"}));
         slot.setAdapter(new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, Utils.getSlots()));
-        AppCompatDialog dialog = new AlertDialog.Builder(this)
+        final AlertDialog dialog = new AlertDialog.Builder(this)
                 .setView(details)
                 .setPositiveButton("Register", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        AppCompatEditText c_title, c_code;
-                        c_title = (AppCompatEditText) details.findViewById(R.id.c_name);
-                        c_code = (AppCompatEditText) details.findViewById(R.id.c_code);
-                        slot.getSelectedItem();
-                        if (TextUtils.isEmpty(c_title.getText().toString()) && TextUtils.isEmpty(c_code.getText().toString()))
-                            M.T(MainActivity.this, "Please fill out both Course Title and Course Code");
-                        else {
-                            check(c_title.getText().toString(), c_code.getText().toString(),
-                                    cred.getSelectedItemPosition(), slot.getSelectedItemPosition()
-                            );
-                        }
+
                     }
                 })
                 .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -170,8 +159,26 @@ public class MainActivity extends AppCompatActivity implements CourseRemoveListe
 
                     }
                 })
+                .setCancelable(false)
                 .create();
         dialog.show();
+        dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AppCompatEditText c_title, c_code;
+                c_title = (AppCompatEditText) details.findViewById(R.id.c_name);
+                c_code = (AppCompatEditText) details.findViewById(R.id.c_code);
+                slot.getSelectedItem();
+                if (TextUtils.isEmpty(c_title.getText().toString()) && TextUtils.isEmpty(c_code.getText().toString())) {
+                    M.T(MainActivity.this, "Please fill out both Course Title and Course Code");
+                } else {
+                    dialog.dismiss();
+                    check(c_title.getText().toString(), c_code.getText().toString(),
+                            cred.getSelectedItemPosition(), slot.getSelectedItemPosition()
+                    );
+                }
+            }
+        });
     }
 
     /**
