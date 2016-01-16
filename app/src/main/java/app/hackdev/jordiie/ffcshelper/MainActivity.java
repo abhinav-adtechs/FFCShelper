@@ -25,7 +25,7 @@ import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements CourseRemoveListener {
 
     private EditText passwordInput;
     private View positiveAction;
@@ -53,12 +53,19 @@ public class MainActivity extends AppCompatActivity {
         RecyclerView rview = (RecyclerView) findViewById(R.id.rview);
         try {
             List<String> cor = FileUtils.readLines(new File(getExternalFilesDir(null), "courses.yog"));
-            for (int i = 0; i < cor.size(); i++)
-                courses.add(Utils.decodeSlot(cor.get(i)));
+            for (int i = 0; i < cor.size(); i++) {
+                Slot s = Utils.decodeSlot(cor.get(i));
+                courses.add(s);
+                if (s.isMorn)
+                    morn.add(s);
+                else
+                    noon.add(s);
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }
         adapter = new CourseListAdapter(courses, this);
+        adapter.setCourseRemoveListener(this);
         rview.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         rview.setAdapter(adapter);
     }
@@ -233,4 +240,12 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    @Override
+    public void onCourseRemoved(Slot s) {
+        if (s.isMorn)
+            morn.remove(s);
+        else
+            noon.remove(s);
+        M.L("course", morn.size() + "\t\t" + noon.size());
+    }
 }

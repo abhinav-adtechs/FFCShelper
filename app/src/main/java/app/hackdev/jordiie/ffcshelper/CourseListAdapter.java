@@ -8,12 +8,21 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import org.apache.commons.io.FileUtils;
+
+import java.io.File;
+import java.io.IOException;
 import java.util.List;
 
 public class CourseListAdapter extends RecyclerView.Adapter<CourseListAdapter.CourseListHolder> {
 
     private List<Slot> data;
     private LayoutInflater inflater;
+    private CourseRemoveListener courseRemoveListener;
+
+    public void setCourseRemoveListener(CourseRemoveListener l) {
+        courseRemoveListener = l;
+    }
 
     public CourseListAdapter(List<Slot> list, Context context) {
         inflater = LayoutInflater.from(context);
@@ -51,6 +60,24 @@ public class CourseListAdapter extends RecyclerView.Adapter<CourseListAdapter.Co
             code = (TextView) itemView.findViewById(R.id.code);
             time = (TextView) itemView.findViewById(R.id.timings);
             credits = (TextView) itemView.findViewById(R.id.credits);
+            itemView.findViewById(R.id.delete).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    try {
+                        File file = new File(inflater.getContext().getExternalFilesDir(null), "courses.yog");
+                        List<String> courses = FileUtils.readLines(file);
+                        file.delete();
+                        if (courseRemoveListener != null)
+                            courseRemoveListener.onCourseRemoved(data.get(getPosition()));
+                        courses.remove(getPosition());
+                        FileUtils.writeLines(file, courses, true);
+                        data.remove(getPosition());
+                        notifyItemRemoved(getPosition());
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            });
         }
     }
 
