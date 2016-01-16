@@ -18,8 +18,10 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 
-import java.util.Arrays;
-import java.util.Collections;
+import org.apache.commons.io.FileUtils;
+
+import java.io.File;
+import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -49,6 +51,13 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         RecyclerView rview = (RecyclerView) findViewById(R.id.rview);
+        try {
+            List<String> cor = FileUtils.readLines(new File(getExternalFilesDir(null), "courses.yog"));
+            for (int i = 0; i < cor.size(); i++)
+                courses.add(Utils.decodeSlot(cor.get(i)));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         adapter = new CourseListAdapter(courses, this);
         rview.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         rview.setAdapter(adapter);
@@ -168,14 +177,14 @@ public class MainActivity extends AppCompatActivity {
      */
     private void check(String c_name, String c_code, int c_credits, int c_slot) {
         Slot slot = new Slot();
-        slot.isMorn = isMorn(c_slot);
-        slot.isTh = isTh(c_slot);
+        slot.isMorn = Utils.isMorn(c_slot);
+        slot.isTh = Utils.isTh(c_slot);
         slot.courseCode = c_code;
         slot.courseTitle = c_name;
         slot.credits = c_credits;
         slot.slot = c_slot;
-        slot.pos = getPos(c_slot, slot.isTh);
-        slot.day = getDays(c_slot, slot.isTh);
+        slot.pos = Utils.getPos(c_slot, slot.isTh);
+        slot.day = Utils.getDays(c_slot, slot.isTh);
         //String data = c_name
         if (slot.isMorn) {
             boolean clash = false;
@@ -189,7 +198,11 @@ public class MainActivity extends AppCompatActivity {
                 morn.add(slot);
                 courses.add(slot);
                 adapter.addAt(courses.size() - 1);
-                //FileUtils.write(new File(getFilesDir(), "courses.yog"), data, true);
+                try {
+                    FileUtils.write(new File(getExternalFilesDir(null), "courses.yog"), Utils.encodeSlot(slot), true);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
                 M.T(this, "Course successfully registered");
             } else {
                 M.T(this, "This slot clashes with another slot.\nPlease check the slots");
@@ -207,257 +220,17 @@ public class MainActivity extends AppCompatActivity {
                 noon.add(slot);
                 courses.add(slot);
                 adapter.addAt(courses.size() - 1);
-                //FileUtils.write(new File(getFilesDir(), "courses.yog"), data, true);
+                try {
+                    FileUtils.write(new File(getExternalFilesDir(null), "courses.yog"), Utils.encodeSlot(slot), true);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
                 M.T(this, "Course successfully registered");
             } else {
                 M.T(this, "This slot clashes with another slot.\nPlease check the slots");
             }
             M.L("course", clash + "\t\t" + "\t\t" + slot.isMorn);
         }
-    }
-
-    /**
-     * Check if the slot is a Theory or a Lab
-     *
-     * @param slot slot selected from the spinner
-     * @return true if slot is theory ,false otherwise
-     */
-    private boolean isTh(int slot) {
-        return slot >= 0 && slot <= 24;
-    }
-
-    /**
-     * Check if the slot is a Morning or Afternoon
-     *
-     * @param slot slot selected from the spinner
-     * @return true if slot is Morning ,false otherwise
-     */
-    private boolean isMorn(int slot) {
-        return slot >= 0 && slot <= 10 || slot >= 25 && slot <= 37;
-    }
-
-    /**
-     * Get the position in the time table
-     *
-     * @param slot slot selected from the spinner
-     * @param isTh Theory or Lab
-     * @return List of integers which has the position of a slot in the time table
-     */
-    private List<Integer> getPos(int slot, boolean isTh) {
-        if (isTh) {
-            switch (slot) {
-                case 0:
-                case 11:
-                    return Arrays.asList(0, 1);
-                case 1:
-                case 12:
-                    return Arrays.asList(0, 1);
-                case 2:
-                case 13:
-                    return Arrays.asList(2, 0, 3);
-                case 3:
-                case 14:
-                    return Arrays.asList(2, 0, 3);
-                case 4:
-                case 15:
-                    return Arrays.asList(3, 2, 0);
-                case 5:
-                case 16:
-                    return Arrays.asList(1, 1, 2);
-                case 6:
-                case 17:
-                    return Arrays.asList(1, 2);
-
-                /*case 7:
-                    return Arrays.asList(0, 3, 1);
-                case 8:
-                    return Arrays.asList(4, 2, 0, 3);
-                case 9:
-                    return Arrays.asList(3, 2, 4, 0);
-                case 10:
-                    return Arrays.asList(1, 4, 1, 2);*/
-                case 7:
-                case 18:
-                    return Arrays.asList(0, 3, 1);
-                case 19:
-                    return Arrays.asList(0, 3, 1);
-                case 20:
-                    return Arrays.asList(2, 0, 3, 4);
-                case 8:
-                case 21:
-                    return Arrays.asList(4, 2, 0, 3);
-                case 9:
-                case 22:
-                    return Arrays.asList(3, 2, 4, 0);
-                case 10:
-                case 23:
-                    return Arrays.asList(1, 4, 1, 2);
-                case 24:
-                    return Arrays.asList(1, 4, 2);
-                default:
-                    return new LinkedList<>();
-            }
-        } else {
-            switch (slot) {
-                case 25:
-                case 38:
-                case 28:
-                case 41:
-                case 31:
-                case 44:
-                case 32:
-                case 47:
-                case 35:
-                case 50:
-                    return Arrays.asList(0, 1);
-                case 26:
-                case 39:
-                case 29:
-                case 42:
-                case 45:
-                case 33:
-                case 48:
-                case 36:
-                case 51:
-                    return Arrays.asList(2, 3);
-                case 27:
-                case 40:
-                case 30:
-                case 43:
-                case 46:
-                case 34:
-                case 49:
-                case 37:
-                case 52:
-                    return Arrays.asList(4, 5);
-                /*case 28:
-                case 41:
-                    return Arrays.asList(6, 7);
-                case 29:
-                case 42:
-                    return Arrays.asList(8, 9);
-                case 30:
-                case 43:
-                    return Arrays.asList(10, 11);*/
-                /*case 31:
-                case 44:
-                    return Arrays.asList(12, 13);
-                case 45:
-                    return Arrays.asList(14, 15);
-                case 46:
-                    return Arrays.asList(16, 17);*/
-                /*case 32:
-                case 47:
-                    return Arrays.asList(18, 19);
-                case 33:
-                case 48:
-                    return Arrays.asList(20, 21);
-                case 34:
-                case 49:
-                    return Arrays.asList(22, 23);*/
-                /*case 35:
-                case 50:
-                    return Arrays.asList(24, 25);
-                case 36:
-                case 51:
-                    return Arrays.asList(26, 27);
-                case 37:
-                case 52:
-                    return Arrays.asList(28, 29);*/
-                default:
-                    return new LinkedList<>();
-            }
-        }
-    }
-
-    /**
-     * Get days for a slot
-     *
-     * @param slot slot selected from spinner
-     * @param isTh Theory or Lab
-     * @return List of integer which contains days for a particular slot
-     */
-    private List<Integer> getDays(int slot, boolean isTh) {
-        if (isTh) {
-            switch (slot) {
-                case 0:
-                case 11:
-                    return Arrays.asList(0, 3);
-                case 1:
-                case 12:
-                    return Arrays.asList(1, 4);
-                case 2:
-                case 13:
-                    return Arrays.asList(0, 2, 3);
-                case 3:
-                case 14:
-                    return Arrays.asList(1, 3, 4);
-                case 4:
-                case 15:
-                    return Arrays.asList(0, 2, 4);
-                case 5:
-                case 16:
-                    return Arrays.asList(0, 2, 3);
-                case 6:
-                case 17:
-                    return Arrays.asList(1, 4);
-                case 7:
-                case 18:
-                    return Arrays.asList(0, 1, 3);
-                case 19:
-                    return Arrays.asList(1, 2, 4);
-                case 20:
-                    return Arrays.asList(0, 2, 3, 4);
-                case 8:
-                case 21:
-                    return Arrays.asList(0, 1, 3, 4);
-                case 9:
-                case 22:
-                    return Arrays.asList(0, 2, 3, 4);
-                case 10:
-                case 23:
-                    return Arrays.asList(0, 1, 2, 3);
-                case 24:
-                    return Arrays.asList(1, 2, 4);
-            }
-        } else {
-            switch (slot) {
-                case 25:
-                case 26:
-                case 27:
-                case 38:
-                case 39:
-                case 40:
-                    return Collections.singletonList(0);
-                case 28:
-                case 29:
-                case 30:
-                case 41:
-                case 42:
-                case 43:
-                    return Collections.singletonList(1);
-                case 31:
-                case 44:
-                case 45:
-                case 46:
-                    return Collections.singletonList(2);
-                case 32:
-                case 33:
-                case 34:
-                case 47:
-                case 48:
-                case 49:
-                    return Collections.singletonList(3);
-                case 35:
-                case 36:
-                case 37:
-                case 50:
-                case 51:
-                case 52:
-                    return Collections.singletonList(4);
-            }
-        }
-        return new LinkedList<>();
     }
 
 }

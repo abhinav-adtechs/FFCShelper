@@ -32,6 +32,8 @@ public class CourseListAdapter extends RecyclerView.Adapter<CourseListAdapter.Co
         holder.code.setText(c.courseCode.toUpperCase());
         String slot = Utils.getSlots()[c.slot];
         holder.slot.setText(slot);
+        holder.credits.setText((c.credits + 1) + "");
+        holder.time.setText(Utils.getTimings(c));
     }
 
     @Override
@@ -40,7 +42,7 @@ public class CourseListAdapter extends RecyclerView.Adapter<CourseListAdapter.Co
     }
 
     public class CourseListHolder extends RecyclerView.ViewHolder {
-        TextView title, slot, code, time;
+        TextView title, slot, code, time, credits;
 
         public CourseListHolder(View itemView) {
             super(itemView);
@@ -48,6 +50,7 @@ public class CourseListAdapter extends RecyclerView.Adapter<CourseListAdapter.Co
             slot = (TextView) itemView.findViewById(R.id.slot);
             code = (TextView) itemView.findViewById(R.id.code);
             time = (TextView) itemView.findViewById(R.id.timings);
+            credits = (TextView) itemView.findViewById(R.id.credits);
         }
     }
 
