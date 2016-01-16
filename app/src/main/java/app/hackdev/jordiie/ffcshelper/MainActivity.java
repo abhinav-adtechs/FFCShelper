@@ -140,7 +140,7 @@ public class MainActivity extends AppCompatActivity implements CourseRemoveListe
      * Show a dialog box for registering
      */
     private void register() {
-        final View details = View.inflate(this, R.layout.course_details, null);
+        final View details = View.inflate(this, R.layout.dialog_view_course_details, null);
         final AppCompatSpinner cred = (AppCompatSpinner) details.findViewById(R.id.c_credits);
         final AppCompatSpinner slot = (AppCompatSpinner) details.findViewById(R.id.c_slot);
         cred.setAdapter(new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, new String[]{"1", "2", "3", "4", "5"}));

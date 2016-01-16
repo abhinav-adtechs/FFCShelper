@@ -31,7 +31,7 @@ public class CourseListAdapter extends RecyclerView.Adapter<CourseListAdapter.Co
 
     @Override
     public CourseListHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        return new CourseListHolder(inflater.inflate(R.layout.course_item, parent, false));
+        return new CourseListHolder(inflater.inflate(R.layout.item_course, parent, false));
     }
 
     @Override
