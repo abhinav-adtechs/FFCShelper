@@ -18,10 +18,10 @@ public class CourseListAdapter extends RecyclerView.Adapter<CourseListAdapter.Co
 
     private List<Slot> data;
     private LayoutInflater inflater;
-    private CourseRemoveListener courseRemoveListener;
+    private CourseChangeListener courseChangeListener;
 
-    public void setCourseRemoveListener(CourseRemoveListener l) {
-        courseRemoveListener = l;
+    public void setCourseChangeListener(CourseChangeListener l) {
+        courseChangeListener = l;
     }
 
     public CourseListAdapter(List<Slot> list, Context context) {
@@ -39,9 +39,9 @@ public class CourseListAdapter extends RecyclerView.Adapter<CourseListAdapter.Co
         Slot c = data.get(position);
         holder.title.setText(c.courseTitle.toUpperCase());
         holder.code.setText(c.courseCode.toUpperCase());
-        String slot = Utils.getSlots()[c.slot];
+        String slot = Utils.getSlots().get(c.slot);
         holder.slot.setText(slot);
-        holder.credits.setText((c.credits + 1) + "");
+        holder.credits.setText((c.credits) + "");
         holder.time.setText(Utils.getTimings(c));
     }
 
@@ -67,8 +67,8 @@ public class CourseListAdapter extends RecyclerView.Adapter<CourseListAdapter.Co
                         File file = new File(inflater.getContext().getExternalFilesDir(null), "courses.yog");
                         List<String> courses = FileUtils.readLines(file);
                         file.delete();
-                        if (courseRemoveListener != null)
-                            courseRemoveListener.onCourseRemoved(data.get(getPosition()));
+                        if (courseChangeListener != null)
+                            courseChangeListener.onCourseRemoved(data.get(getPosition()));
                         courses.remove(getPosition());
                         FileUtils.writeLines(file, courses, true);
                         data.remove(getPosition());

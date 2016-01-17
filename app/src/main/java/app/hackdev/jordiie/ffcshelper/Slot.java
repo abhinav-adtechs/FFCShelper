@@ -13,4 +13,6 @@ public class Slot {
     public String courseCode;
     public int credits;
     public int slot;
+    public int courseType;
+    public String venue;
 }

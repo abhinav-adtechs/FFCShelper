@@ -2,7 +2,6 @@ package app.hackdev.jordiie.ffcshelper;
 
 
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -15,11 +14,11 @@ public class Utils {
      *
      * @return All the slots available in VIT
      */
-    public static String[] getSlots() {
-        return new String[]{"A1", "B1", "C1", "D1", "E1", "F1", "G1", "A1+TA1", "D1+TD1", "E1+TE1", "F1+TF1",
+    public static List<String> getSlots() {
+        return Arrays.asList("A1", "B1", "C1", "D1", "E1", "F1", "G1", "A1+TA1", "D1+TD1", "E1+TE1", "F1+TF1",
                 "A2", "B2", "C2", "D2", "E2", "F2", "G2", "A2+TA2", "B2+TB2", "C2+TC2", "D2+TD2", "E2+TE1", "F2+TF2", "G2+TG2",
                 "L1+L2", "L3+L4", "L5+L6", "L7+L8", "L9+L10", "L11+L12", "L13+L14", "L19+L20", "L21+L22", "L23+L24", "L25+L26", "L27+L28", "L29+L30",
-                "L31+L32", "L33+L34", "L35+L36", "L37+L38", "L39+L40", "L41+L42", "L43+L44", "L45+L46", "L47+L48", "L49+L50", "L51+L52", "L53+L54", "L55+56", "L57+L58", "L59+60"};
+                "L31+L32", "L33+L34", "L35+L36", "L37+L38", "L39+L40", "L41+L42", "L43+L44", "L45+L46", "L47+L48", "L49+L50", "L51+L52", "L53+L54", "L55+L56", "L57+L58", "L59+L60");
     }
 
     /**
@@ -30,34 +29,42 @@ public class Utils {
      * @return true if slots clashes , false otherwise
      */
     public static boolean equals(Slot l, Slot r) {
-        M.L("crs", Collections.disjoint(l.day, r.day) + "\t\t" + Collections.disjoint(l.pos, r.pos) + "\t\t" + l.day.size() + "\t\t" + r.day.size() + "\t\t" + l.pos.size() + "\t\t" + r.pos.size());
-        /*if (l.isMorn == r.isMorn) {
-            if (Collections.disjoint(l.day, r.day)) {
-                return false;
-            } else {
-                if (Collections.disjoint(l.pos, r.pos)) {
-                    return false;
-                } else
-                    return true;
-            }
-        } else
-            return false;*/
-        if (l.isTh && r.isTh) {
-            for (int i = 0; i < l.day.size(); i++) {
-                if (l.day.get(i).equals(r.day.get(i)))
-                    if (l.pos.get(i).equals(r.pos.get(i)))
-                        return true;
-            }
-        } else {
+        if (l.isMorn == r.isMorn) {
             for (int i = 0; i < l.day.size(); i++)
                 for (int j = 0; j < r.day.size(); j++)
                     if (l.day.get(i).equals(r.day.get(j)))
                         if (l.pos.get(i).equals(r.pos.get(j)))
                             return true;
+            /*if (l.isTh && r.isTh) {
+                for (int i = 0; i < l.day.size(); i++) {
+                    if (l.day.get(i).equals(r.day.get(i)))
+                        if (l.pos.get(i).equals(r.pos.get(i)))
+                            return true;
+                }
+            } else {
+                for (int i = 0; i < l.day.size(); i++)
+                    for (int j = 0; j < r.day.size(); j++)
+                        if (l.day.get(i).equals(r.day.get(j)))
+                            if (l.pos.get(i).equals(r.pos.get(j)))
+                                return true;
+            }*/
         }
         return false;
     }
 
+    /**
+     * Get the total credits
+     *
+     * @param slots List of slots
+     * @return Total Credits in integer
+     */
+    public static int getCredits(List<Slot> slots) {
+        int a = 0;
+        for (Slot s : slots) {
+            a += s.credits;
+        }
+        return a;
+    }
 
     /**
      * Check if the slot is a Theory or a Lab
@@ -110,15 +117,6 @@ public class Utils {
                 case 6:
                 case 17:
                     return Arrays.asList(1, 2);
-
-                /*case 7:
-                    return Arrays.asList(0, 3, 1);
-                case 8:
-                    return Arrays.asList(4, 2, 0, 3);
-                case 9:
-                    return Arrays.asList(3, 2, 4, 0);
-                case 10:
-                    return Arrays.asList(1, 4, 1, 2);*/
                 case 7:
                 case 18:
                     return Arrays.asList(0, 3, 1);
@@ -173,40 +171,6 @@ public class Utils {
                 case 37:
                 case 52:
                     return Arrays.asList(4, 5);
-                /*case 28:
-                case 41:
-                    return Arrays.asList(6, 7);
-                case 29:
-                case 42:
-                    return Arrays.asList(8, 9);
-                case 30:
-                case 43:
-                    return Arrays.asList(10, 11);*/
-                /*case 31:
-                case 44:
-                    return Arrays.asList(12, 13);
-                case 45:
-                    return Arrays.asList(14, 15);
-                case 46:
-                    return Arrays.asList(16, 17);*/
-                /*case 32:
-                case 47:
-                    return Arrays.asList(18, 19);
-                case 33:
-                case 48:
-                    return Arrays.asList(20, 21);
-                case 34:
-                case 49:
-                    return Arrays.asList(22, 23);*/
-                /*case 35:
-                case 50:
-                    return Arrays.asList(24, 25);
-                case 36:
-                case 51:
-                    return Arrays.asList(26, 27);
-                case 37:
-                case 52:
-                    return Arrays.asList(28, 29);*/
                 default:
                     return new LinkedList<>();
             }
@@ -271,33 +235,33 @@ public class Utils {
                 case 38:
                 case 39:
                 case 40:
-                    return Collections.singletonList(0);
+                    return Arrays.asList(0, 0);
                 case 28:
                 case 29:
                 case 30:
                 case 41:
                 case 42:
                 case 43:
-                    return Collections.singletonList(1);
+                    return Arrays.asList(1, 1);
                 case 31:
                 case 44:
                 case 45:
                 case 46:
-                    return Collections.singletonList(2);
+                    return Arrays.asList(2, 2);
                 case 32:
                 case 33:
                 case 34:
                 case 47:
                 case 48:
                 case 49:
-                    return Collections.singletonList(3);
+                    return Arrays.asList(3, 3);
                 case 35:
                 case 36:
                 case 37:
                 case 50:
                 case 51:
                 case 52:
-                    return Collections.singletonList(4);
+                    return Arrays.asList(4, 4);
             }
         }
         return new LinkedList<>();
@@ -318,8 +282,9 @@ public class Utils {
         slot.credits = Integer.valueOf(sl[3]);
         slot.isTh = Boolean.parseBoolean(sl[4]);
         slot.isMorn = Boolean.parseBoolean(sl[5]);
-        String[] days = sl[6].replace("d:", "").split(",");
-        String[] pos = sl[7].replace("s:", "").split(",");
+        slot.courseType = Integer.valueOf(sl[6]);
+        String[] days = sl[7].replace("d:", "").split(",");
+        String[] pos = sl[8].replace("s:", "").split(",");
         List<Integer> d = new LinkedList<>();
         for (String day : days) d.add(Integer.valueOf(day));
         slot.day = d;
@@ -337,14 +302,14 @@ public class Utils {
      */
     public static String encodeSlot(Slot slot) {
         String s = "";
-        s += (slot.slot + sep + slot.courseTitle + sep + slot.courseCode + sep + slot.credits + sep + slot.isTh + sep + slot.isMorn + sep);
+        s += (slot.slot + sep + slot.courseTitle + sep + slot.courseCode + sep + slot.credits + sep + slot.isTh + sep + slot.isMorn + sep + slot.courseType + sep);
         s += "d:";
         for (int i = 0; i < slot.day.size(); i++)
-            s += (i + ",");
+            s += (slot.day.get(i) + ",");
         s += sep;
         s += "s:";
         for (int i = 0; i < slot.pos.size(); i++)
-            s += (i + ",");
+            s += (slot.pos.get(i) + ",");
         s += (sep + "\n");
         M.L("slot", s);
         return s;
@@ -357,45 +322,51 @@ public class Utils {
      * @return Timings in string
      */
     public static String getTimings(Slot slot) {
+        M.L("slottimesda", slot.day);
+        M.L("slottimesps", slot.pos);
         String s = "";
         if (slot.isTh) {
             for (int i = 0; i < slot.day.size(); i++) {
-                s += day(i);
+                s += day(slot.day.get(i));
                 int a;
                 if (slot.isMorn) {
-                    a = 8 + slot.day.get(i);
+                    a = 8 + slot.pos.get(i);
                 } else {
-                    a = 2 + slot.day.get(i);
+                    a = 2 + slot.pos.get(i);
                 }
                 String t;
                 if (a >= 8)
                     t = "AM";
                 else
                     t = "PM";
+                if (a == 12)
+                    t = "PM";
                 s += (a + ":00 " + t + " - " + a + ":50 " + t);
-                s += "\n";
+                if (i != slot.day.size() - 1)
+                    s += "\n";
             }
         } else {
             for (int i = 0; i < slot.day.size(); i++) {
-                for (int j = 0; j < slot.pos.size(); j++) {
-                    s += day(i);
-                    int a;
-                    if (slot.isMorn) {
-                        a = 8 + slot.pos.get(j);
-                    } else {
-                        a = 2 + slot.pos.get(j);
-                    }
-                    String t;
-                    if (a >= 8)
-                        t = "AM";
-                    else
-                        t = "PM";
-                    s += (a + ":00 " + t + " - " + a + ":50 " + t);
-                    s += "\n";
+                s += day(slot.day.get(i));
+                int a;
+                if (slot.isMorn) {
+                    a = 8 + slot.pos.get(i);
+                } else {
+                    a = 2 + slot.pos.get(i);
                 }
-                s += "\n";
+                String t;
+                if (a >= 8)
+                    t = "AM";
+                else
+                    t = "PM";
+                if (a == 12)
+                    t = "PM";
+                s += (a + ":00 " + t + " - " + a + ":50 " + t);
+                if (i != slot.day.size() - 1)
+                    s += "\n";
             }
         }
+        M.L("slottimes", s);
         return s;
     }
 

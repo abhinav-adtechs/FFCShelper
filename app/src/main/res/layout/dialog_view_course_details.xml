@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:animateLayoutChanges="true"
     android:orientation="vertical"
     android:padding="15dp">
 
@@ -36,25 +37,32 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:orientation="horizontal"
         android:weightSum="3">
 
-        <TextView
+        <android.support.v7.widget.AppCompatRadioButton
+            android:id="@+id/thr"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="2"
-            android:text="Select the Credits : "
-            android:textSize="18sp" />
+            android:layout_weight="1"
+            android:text="Theory Only" />
 
-        <android.support.v7.widget.AppCompatSpinner
-            android:id="@+id/c_credits"
+        <android.support.v7.widget.AppCompatRadioButton
+            android:id="@+id/lar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1" />
+            android:layout_weight="1"
+            android:text="Lab Only" />
+
+        <android.support.v7.widget.AppCompatRadioButton
+            android:id="@+id/emlr"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Embedded" />
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/therc"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
@@ -65,11 +73,78 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="2"
-            android:text="Select the Slot : "
+            android:text="Select the Theory Credits : "
             android:textSize="18sp" />
 
         <android.support.v7.widget.AppCompatSpinner
-            android:id="@+id/c_slot"
+            android:id="@+id/c_credits_th"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1" />
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:id="@+id/thers"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:orientation="horizontal"
+        android:weightSum="3">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:text="Select the Theory Slot : "
+            android:textSize="18sp" />
+
+        <android.support.v7.widget.AppCompatSpinner
+            android:id="@+id/c_slot_th"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/labc"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:orientation="horizontal"
+        android:weightSum="3">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:text="Select the Lab Credits : "
+            android:textSize="18sp" />
+
+        <android.support.v7.widget.AppCompatSpinner
+            android:id="@+id/c_credits_la"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/labs"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:orientation="horizontal"
+        android:weightSum="3">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:text="Select the Lab Slot : "
+            android:textSize="18sp" />
+
+        <android.support.v7.widget.AppCompatSpinner
+            android:id="@+id/c_slot_la"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1" />
